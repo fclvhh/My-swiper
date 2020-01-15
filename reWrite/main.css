@@ -1,0 +1,19 @@
+.swiper-wrapper {
+  width: 400px;
+  overflow: hidden;
+}
+.swiper-content {
+  display: flex;
+  width: 2000px;
+  transition: transform .5s;
+}
+.slide {
+  width: 400px;
+  height: 300px;
+  border:1px solid;
+}
+.buttons {
+  display: inline-block;
+  width: 400px;
+  text-align: center;
+}
