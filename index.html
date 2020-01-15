@@ -6,23 +6,116 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>轮播</title>
   <link rel="stylesheet" href="./assets/css/main.css">
+  <style>
+    .swiper-wrapper {
+      width: 400px;
+      overflow: hidden;
+    }
+    .swiper-content {
+      display: flex;
+      width: 2000px;
+      transition: transform .5s;
+    }
+    .slide {
+      width: 400px;
+      height: 300px;
+      border:1px solid;
+    }
+    .buttons {
+      display: inline-block;
+      width: 400px;
+      text-align: center;
+    }
+    .buttons > .active {
+      color:red;
+    }
+  </style>
 </head>
 <body>
-  <h2 class="one">走马灯思路</h2>
-  <div class="wrapper">
-    <div class="images">
-      <img src="./assets/images/cat-1.jpg" alt="">
-      <img src="./assets/images/cat-2.jpg" alt="">
-      <img src="./assets/images/cat-3.jpg" alt="">
-    </div>
-  </div>
-  <div class="buttons">
-    <button id="p1">第1张</button>
-    <button id="p2">第2张</button>
-    <button id="p3">第3张</button>
-  </div>
-  <h2>解决抖动问题</h2>
-  <script src="./node_modules/jQuery/tmp/jquery.js"></script>
-  <script src="./assets/js/1.js"></script>
+ <div class="swiper-wrapper">
+   <div class="swiper-content">
+     <div class="slide">1</div>
+     <div class="slide">2</div>
+     <div class="slide">3</div>
+     <div class="slide">4</div>
+     <div class="slide">5</div>
+   </div>
+ </div>
+ <!-- <div class="buttons">
+   <button id="previousSlide">上一张</button>
+   <button id='nextSlide'>下一张</button>
+ </div> -->
+ <div class="buttons">
+   <button>第1张</button>
+   <button>第2张</button>
+   <button>第3张</button>
+   <button>第4张</button>
+   <button>第5张</button>
+ </div>
+ <script src="./node_modules/jQuery/tmp/jquery.js"></script>
+ <!-- <script>
+   let $nextSlide = $('#nextSlide')
+   let $previousSlide = $('#previousSlide')
+   let $swiperContent = $('.swiper-content')
+   let currentIndex = 0
+   //下一张的功能
+   $nextSlide.on('click',function(){
+     console.log('hi')
+     currentIndex = (currentIndex+1) % 5
+     let offsetSize = currentIndex*400
+     console.log(offsetSize)
+     console.log('translateX(-${offsetSize}px)')
+    $swiperContent.css({
+      transform:`translateX(-${offsetSize}px)`
+    }) 
+   })
+   // 上一张功能
+   $previousSlide.on('click',function(){
+     if(currentIndex<0) {
+       currentIndex = 5
+     }
+     currentIndex = (currentIndex-1) % 5
+     let offsetSize = currentIndex*400
+     $swiperContent.css({
+      transform:`translateX(-${offsetSize}px)`
+    }) 
+   })
+ </script> -->
+<script>
+  let $swiperContent = $('.swiper-content')
+  let $buttons = $('.buttons')
+  let $swiperWrapper = $('.swiper-wrapper')
+  $buttons.on('click','button',function(e){
+    // 实现切换功能
+    let index = $(e.target).index()
+    let offsetSize = index*400
+    $swiperContent.css({
+      transform:`translateX(-${offsetSize}px)`
+    }) 
+    // 实现点击高亮效果
+    console.log( $buttons.find('button').eq(index))
+    $buttons.find('button').eq(index)
+    .addClass('active').siblings()
+    .removeClass('active')
+  })
+  // 设置初始状态
+  $buttons.find('button').eq(0).trigger('click')
+  // 实现自动播放
+  let currentIndex = 0
+  let timerId = setInterval(function(){
+    currentIndex = (currentIndex+1)%5
+    $buttons.find('button').eq(currentIndex).trigger('click')
+  },3000)
+  // 实现移入暂停 , 移出开始轮播
+  $swiperWrapper.on('mouseenter',function(){
+    clearInterval(timerId)
+  })
+  $swiperWrapper.on('mouseleave',function(){
+    timerId = setInterval(function(){
+      currentIndex = (currentIndex+1)%5
+      $buttons.find('button').eq(currentIndex).trigger('click')
+  },3000)
+  })
+</script>
 </body>
 </html>
